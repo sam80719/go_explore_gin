@@ -1,22 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func main() {
 	router := gin.Default()
-	router.LoadHTMLGlob("view/*") // load temple file under directory view
-
-	//router.LoadHTMLFiles("view/index.tmpl", "view/dashBoard.tmpl") // you also can use  LoadHTMLFiles, but we need write existing file
-
-	router.GET("/index", func(c *gin.Context) { // http://localhost:8088/index
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"title":   "learn Golang",
-			"message": "hello world!",
-			"name":    "sam",
-		})
+	router.Static("/", "./public") // http://localhost:8088/
+	router.POST("/login", func(c *gin.Context) {
+		account := c.PostForm("account")
+		password := c.PostForm("password")
+		c.String(http.StatusOK, fmt.Sprintf("account=%s password=%s", account, password))
 	})
 
 	err := router.Run(":8088")
