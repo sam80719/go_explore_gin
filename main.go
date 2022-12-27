@@ -4,35 +4,26 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"path/filepath"
 )
+
+type loginForm struct {
+	Account  string `form:"account" binding:"required"`
+	Password string `form:"password" binding:"required"`
+}
 
 func main() {
 	router := gin.Default()
 
-	// 32Mib
-	//router.MaxMultipartMemory = 8 // limit memory
-
 	router.Static("/", "./public") // http://localhost:8088/
-	router.POST("/upload", func(c *gin.Context) {
-		account := c.PostForm("account")
-		password := c.PostForm("password")
+	router.POST("/login", func(c *gin.Context) {
+		var form loginForm
 
-		file, err := c.FormFile("file")
-
-		if err != nil {
-			c.String(http.StatusOK, fmt.Sprintf("error upload file: %s", err.Error()))
+		if err := c.ShouldBind(&form); err != nil { // binding value
+			c.String(http.StatusUnauthorized, fmt.Sprintf("binding form failure: %s", err.Error()))
 			return
 		}
 
-		fileName := filepath.Base(file.Filename)
-
-		if err := c.SaveUploadedFile(file, fileName); err != nil {
-			c.String(http.StatusOK, fmt.Sprintf("error save file: %s", err.Error()))
-			return
-		}
-
-		c.String(http.StatusOK, fmt.Sprintf("account=%s password=%s upload file name is %s", account, password, fileName))
+		c.String(http.StatusOK, fmt.Sprintf("binding form success: %s", form.Account))
 	})
 
 	err := router.Run(":8088")
