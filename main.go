@@ -1,28 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"io"
 	"net/http"
-	"os"
-	"time"
 )
 
 func main() {
-	t := time.Now()
-	//formatted := fmt.Sprintf("%d-%02d-%02d", t.Year(), t.Month(), t.Day())
-	formatted := fmt.Sprintf("%d%02d%02d", t.Year(), t.Month(), t.Day()) // time format
-	file, _ := os.Create(formatted + "gin.log")
-
-	gin.DefaultWriter = io.MultiWriter(file)
-
 	router := gin.Default()
-	router.Use(gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string { // record more detail
-		return fmt.Sprintf("format log: %s - [%s] %s %s", params.ClientIP, params.TimeStamp, params.Method, params.Request)
-	}))
-	router.GET("/testLog", func(c *gin.Context) { // http://localhost:8088/testLog
-		c.String(http.StatusOK, "hello world!")
+	router.LoadHTMLGlob("view/*") // load temple file under directory view
+
+	//router.LoadHTMLFiles("view/index.tmpl", "view/dashBoard.tmpl") // you also can use  LoadHTMLFiles, but we need write existing file
+
+	router.GET("/index", func(c *gin.Context) { // http://localhost:8088/index
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"title":   "learn Golang",
+			"message": "hello world!",
+			"name":    "sam",
+		})
 	})
 
 	err := router.Run(":8088")
