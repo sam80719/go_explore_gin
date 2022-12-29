@@ -7,15 +7,25 @@ import (
 	"net/http"
 )
 
-func UserSave(c *gin.Context) {
-	userName := c.Param("name")
-	c.String(http.StatusOK, "save data for user: "+userName)
-}
+func UserRegister(c *gin.Context) {
+	var user model.UserModel
 
-func UserSaveBYQuery(c *gin.Context) {
-	userName := c.Query("name")
-	phone := c.DefaultQuery("phone", "95279527")
-	c.String(http.StatusOK, "save data for user: "+userName+", phone: "+phone)
+	if e := c.ShouldBind(&user); e != nil {
+		log.Panicln("register failure", e.Error())
+		return
+	}
+
+	checkPassword := c.PostForm("password_check")
+	if checkPassword != user.Password {
+		c.String(http.StatusBadRequest, "password is not equal to check password")
+		log.Panicln("password is not to check password")
+		return
+	}
+
+	id := user.Store()
+	log.Println("memberId is: ", id)
+	c.String(http.StatusCreated, "memberId is: ", id)
+	return
 }
 
 func UserLogin(c *gin.Context) {
