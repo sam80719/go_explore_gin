@@ -2,11 +2,13 @@ package router
 
 import (
 	"app/handler"
+	"app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func SetRouterPublic() *gin.Engine {
-	router := gin.Default() // gin router init
+	router := gin.New()
+	router.Use(middleware.Logger(), middleware.Auth(), gin.Recovery())
 
 	userRouter := router.Group("/user")
 	{
