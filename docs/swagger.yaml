@@ -1,0 +1,10 @@
+host: localhost:8088
+info:
+  contact:
+    name: Sam Chen
+    url: https://github.com/sam80719
+  description: Gin swagger ini
+  title: Gin swagger test
+  version: "1.0"
+paths: {}
+swagger: "2.0"

@@ -1,0 +1,14 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Gin swagger ini",
+        "title": "Gin swagger test",
+        "contact": {
+            "name": "Sam Chen",
+            "url": "https://github.com/sam80719"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8088",
+    "paths": {}
+}

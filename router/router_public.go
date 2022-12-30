@@ -4,6 +4,8 @@ import (
 	"app/handler"
 	"app/middleware"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func SetRouterPublic() *gin.Engine {
@@ -14,8 +16,10 @@ func SetRouterPublic() *gin.Engine {
 	{
 		userRouter.POST("/login", handler.UserLogin)       // http://localhost:8088/user/login
 		userRouter.POST("/register", handler.UserRegister) // http://localhost:8088/user/register
-
 	}
+
+	url := ginSwagger.URL("http://localhost:8088/swagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url)) // http://localhost:8088/swagger/index.html
 
 	return router
 }
