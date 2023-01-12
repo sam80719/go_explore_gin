@@ -1,0 +1,23 @@
+### for http client use
+
+### get all
+GET http://localhost:8088/user/all
+Accept: application/json
+
+### get one
+GET http://localhost:8088/user/2
+Accept: application/json
+
+### create
+POST http://localhost:8088/user/register
+Content-Type: application/json
+
+{
+  "email": "sam@gmail.com",
+  "password": "password"
+}
+
+
+### delete
+DELETE http://localhost:8088/user/7
+Accept: application/json

@@ -14,6 +14,9 @@ func SetRouterPublic() *gin.Engine {
 
 	userRouter := router.Group("/user")
 	{
+		userRouter.GET("/:id", handler.GetOne)     // http://localhost:8088/user/:id
+		userRouter.GET("/all", handler.UserGetAll) // http://localhost:8088/user/all
+		userRouter.DELETE("/:id", handler.DeleteOne)
 		userRouter.POST("/login", handler.UserLogin)       // http://localhost:8088/user/login
 		userRouter.POST("/register", handler.UserRegister) // http://localhost:8088/user/register
 	}
