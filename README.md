@@ -2,6 +2,8 @@
 
 ## first init 
 ```shell
+cp docker-compose.sample.yml docker-compose.yml
+cp env.sample .env
 docker-compose up -d
 docker exec -it app /bin/sh
 cd src/app/
